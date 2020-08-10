@@ -3,14 +3,14 @@ baseurl = "https://xkcd.com/"
 dirpath ="/home/nillnada/xkcd/all/"
 reg = r"[\w|\d|\s|\(|\)]+\.[j|p][p|n][g]"
 
-for i in range(403,614):
+for i in range(1,614):
     if i == 404:
         """
         this one took me a while to figure out
         turns out he skipped 404 for 'obvious reasons'
         """
         continue
-    if i%50==0:
+    if i % 50 == 0:
         print("Sleeping for a while, this is my version of Congestion Control lol")
         time.sleep(10)
     url = baseurl+str(i)+"/"
