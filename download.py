@@ -1,14 +1,13 @@
-import bs4,requests,re,time,os,tqdm
+import bs4,requests,re,time,os
 baseurl = "https://xkcd.com/"
-dirpath = "/home/nillnada/xkcd/all/"
+dirpath = "C:/xkcd/"
 reg = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
 
-filepath = "/home/nillnada/xkcd/index.txt"
+filepath = "C:/xkcd/index.txt"
 continue_file = open(filepath,"r")
 start_index = int(continue_file.read())
 continue_file.close()
 
-session = requests.Session()
 def continuum(filepath):
     """ nothing classy just keeps a continue txt file for continuity """
     continue_file = open(filepath,"w+")
@@ -16,25 +15,35 @@ def continuum(filepath):
     continue_file.write(str(i))
     continue_file.close()
     print("updated the continue file")
-for i in range(1,2000):
+
+def check_i(i):
+    """ simply skips the urls without a comic or that the comic isn't an image """
     if i == 404:
         """
         this one took me a while to figure out
         turns out he skipped 404 for 'obvious reasons'
         """
-        continue
-    if i == 1037 or 1608 or 1663:
+        return False
+    if i == 1350:
+        print("Visit https://xkcd.com/1350/ it's an interactive comic")
+        return False
+    if i == 1416:
+        print("Visit https://xkcd.com/1416 it's an .html file with a boring joke (subjective)")
+        return False
+    if i == 1037 | 1608 | 1663:
         """
         these ones I have no idea why he chose
         these specific numbers but anyway there's no
         comic here so we skip
         """ 
-        continue
+        return False
+    return True
 
+session = requests.Session()
+for i in range(start_index,2000):
+    if not check_i(i):
+        continue
     if i % 50 == 0:
-        if i == 1350:
-            print("Visit https://xkcd.com/1350/ it's an interactive comic")
-            continue
         print("Sleeping for a while, this is my version of Congestion Control lol")
         continuum(filepath)
         time.sleep(2)
@@ -56,8 +65,8 @@ for i in range(1,2000):
         img =session.get(img_url)
     except:
         continuum(filepath)
-    file = open("/home/nillnada/xkcd/all/"+name[0],"wb")
-    for j in img.iter_content(chunk_size=1024*8*1024):
+    file = open(dirpath+name[0],"wb")
+    for j in img.iter_content(chunk_size=1024*8):
         file.write(j)
     file.close()
 
