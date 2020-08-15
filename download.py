@@ -24,18 +24,20 @@ def check_i(i):
         turns out he skipped 404 for 'obvious reasons'
         """
         return False
-    if i == 1350:
-        print("Visit https://xkcd.com/1350/ it's an interactive comic")
+    if i == 1350 or i == 1608:
+        print("Visit https://xkcd.com/"+str(i)+"/ it's an interactive comic")
         return False
     if i == 1416:
         print("Visit https://xkcd.com/1416 it's an .html file with a boring joke (subjective)")
         return False
-    if i == 1037 | 1608 | 1663:
+    
+    if i == 1037 or i == 1663:
         """
         these ones I have no idea why he chose
         these specific numbers but anyway there's no
         comic here so we skip
         """ 
+        print("Skipped https://xkcd.com/"+str(i)+"/ the comic is not an image")
         return False
     return True
 
@@ -62,9 +64,12 @@ for i in range(start_index,2000):
         continue
     print("downloading "+name[0])
     try:
-        img =session.get(img_url)
+        img = session.get(img_url)
     except:
+        print("failed to get comic: "+str(i))
         continuum(filepath)
+        continue
+        
     file = open(dirpath+name[0],"wb")
     for j in img.iter_content(chunk_size=1024*8):
         file.write(j)
