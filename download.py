@@ -53,7 +53,8 @@ for i in range(start_index,2000):
     try:
         res = session.get(url)
     except:
-        continuum(filepath)  
+        continuum(filepath)
+        continue
         #res.raise_for_status()
     soup = bs4.BeautifulSoup(res.content, features="lxml")
     img_url = "https:"+soup.body.find("div",id='comic').img['src']
