@@ -1,9 +1,16 @@
-import bs4,requests,re,time,os
+import bs4,getpass,requests,re,time,os
 baseurl = "https://xkcd.com/"
 regex = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
 
-dirpath = "C:/xkcd/"
-filepath = "C:/xkcd/index.txt"
+#dirpath = "/home/nillnada/xkcd/all/"
+#filepath = "/home/nillnada/xkcd/index.txt"
+
+if os.name =="posix":
+    dirpath = "/home/"+getpass.getuser()+"/xkcd/"
+    filepath = dirpath+"index.txt"
+else:
+    dirpath = "C:/Users/"+getpass.getuser()+"/xkcd"
+    filepath = dirpath+"index.txt"
 
 def initialize(dirpath,filepath):
     """runs once at script start"""
@@ -55,7 +62,7 @@ def check_i(i):
     return True
 #The session implements persistent http connections
 session = requests.Session()
-for i in range(start_index,2346):
+for i in range(start_index,2346+1):
     if not check_i(i):
         continue
     if i % 10 == 0:
