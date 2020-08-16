@@ -56,10 +56,10 @@ session = requests.Session()
 for i in range(start_index,2346):
     if not check_i(i):
         continue
-    if i % 50 == 0:
+    if i % 10 == 0:
         print("Sleeping for a while, this is my version of Congestion Control lol")
         continuum(filepath)
-        time.sleep(2)
+        time.sleep(0.5)
     url = baseurl+str(i)+"/"
     try:
         res = session.get(url)
@@ -86,4 +86,3 @@ for i in range(start_index,2346):
     for j in img.iter_content(chunk_size=1024*8):
         file.write(j)
     file.close()
-
