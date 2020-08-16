@@ -1,6 +1,14 @@
 # xkcd
 This is a script for downloading all the xkcd comics
 
+# How to use the script
+clone the repo 
+$git clone https://xkcd.com/brayo-pip/xkcd.git
+
+Then run the script.
+
+$python xkcd/download.py
+
 # How this script is better than most of the other scripts
 I can't say for sure that this is the best script for downloading xkcd comics there is,
 but I can say it's one of the fastest. The script uses persistent http connections which I haven't yet seen in another xkcd script.
