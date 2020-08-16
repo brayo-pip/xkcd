@@ -14,4 +14,4 @@ The continuity file is also updated during this 'sleep' session.
 The script also has an amateur network congestion control, simply sleeps for 0.5 seconds for every 10 comics downloaded.This may be necessary once I introduce multithreading.
 
 # Upcoming features
-I wish to introduce multithreading so as to be able to fully utilize the a user's bandwidth. Requesting multiple comics simultaneously and writing them to disk/SSD simultanously.
+I wish to introduce multithreading so as to be able to fully utilize the a user's bandwidth. Requesting multiple comics simultaneously and writing them to disk/SSD simultaneously.
