@@ -12,6 +12,7 @@ def initialize(dirpath,filepath):
     if not os.path.exists(filepath):
         """ Creates the continue file on first run """
         continue_file = open(filepath, "x")
+        continue_file.write(str(i))
         continue_file.close()
 
 continue_file = open(filepath,"r")

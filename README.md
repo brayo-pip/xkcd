@@ -17,7 +17,7 @@ The script skips previously downloaded comics and skips non-image comics such as
 
 ## Other technical features
 The script maintains a continuity file so that it can 'recall' the last comic it downloaded.
-It does updates the continuity file every 50 comics, I didn't want to update too often as this could be a bottleneck.
+It does updates the continuity file every 10 comics, I didn't want to update too often as this could be a bottleneck.
 The continuity file is also updated during this 'sleep' session.
 
 The script also has an amateur network congestion control, simply sleeps for 0.5 seconds for every 10 comics downloaded.This may be necessary once I introduce multithreading.
