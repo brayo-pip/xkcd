@@ -1,6 +1,6 @@
 import bs4,requests,re,time,os
 baseurl = "https://xkcd.com/"
-reg = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
+regex = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
 
 dirpath = "C:/xkcd/"
 filepath = "C:/xkcd/index.txt"
@@ -10,7 +10,7 @@ def initialize(dirpath,filepath):
     if not os.path.exists(dirpath):
         os.makedirs(dirpath)
     if not os.path.exists(filepath):
-        """ Creates the continue file on first run """
+        """Creates the continue file on first run"""
         continue_file = open(filepath, "x")
         continue_file.write(str(i))
         continue_file.close()
@@ -21,7 +21,7 @@ continue_file.close()
 
 
 def continuum(filepath):
-    """ nothing classy just keeps a continue txt file for continuity """
+    """nothing classy just keeps a continue txt file for continuity"""
     continue_file = open(filepath,"w+")
     continue_file.truncate(0)
     continue_file.write(str(i))
@@ -29,12 +29,10 @@ def continuum(filepath):
     print("updated the continue file")
 
 def check_i(i):
-    """ simply skips the urls without a comic or that the comic isn't an image """
+    """simply skips the urls without a comic or that the comic isn't an image"""
     if i == 404:
-        """
-        this one took me a while to figure out
-        turns out he skipped 404 for 'obvious reasons'
-        """
+        #this one took me a while to figure out
+        #turns out he skipped 404 for 'obvious reasons'
         return False
     if i == 1350 or i == 1608 or i == 2198:
         print("Visit https://xkcd.com/"+str(i)+"/ it's an interactive comic")
@@ -44,19 +42,18 @@ def check_i(i):
         return False
     
     if i == 1037 or i == 1663:
-        """
-        these ones I have no idea why he chose
-        these specific numbers but anyway there's no
-        comic here so we skip
-        """ 
+        #these ones I have no idea why he chose
+        #these specific numbers but anyway there's no
+        #comic here so we skip
+        
         print("Skipped https://xkcd.com/"+str(i)+"/ the comic is not an image")
         return False
     if i == 1538 or i == 1953:
-        """"these are just incorrectly parsed am working on it though"""
+        #these are just incorrectly parsed am working on it though
         print("Skipped https://xkcd.com/"+str(i)+"/ the script can't pass these correctly \n Am working on a fix though \n")
         return False
     return True
-
+#The session implements persistent http connections
 session = requests.Session()
 for i in range(start_index,2346):
     if not check_i(i):
@@ -74,7 +71,7 @@ for i in range(start_index,2346):
         #res.raise_for_status()
     soup = bs4.BeautifulSoup(res.content, features="lxml")
     img_url = "https:"+soup.body.find("div",id='comic').img['src']
-    name = re.findall(reg,img_url)
+    name = re.findall(regex,img_url)
 
     if os.path.exists(os.path.join(dirpath,name[0])):
         print("skipping " + name[0]+" comic: "+str(i))
