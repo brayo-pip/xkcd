@@ -10,7 +10,7 @@ def initialize(dirpath,filepath):
     if not os.path.exists(dirpath):
         os.makedirs(dirpath)
     if not os.path.exists(filepath):
-        """Creates the continue file on first run"""
+        #Creates the continue file on first run
         continue_file = open(filepath, "x")
         continue_file.write(str(i))
         continue_file.close()
@@ -40,12 +40,12 @@ def check_i(i):
     if i == 1416:
         print("Visit https://xkcd.com/1416 it's an .html file with a boring joke (subjective)")
         return False
-    
+
     if i == 1037 or i == 1663:
         #these ones I have no idea why he chose
         #these specific numbers but anyway there's no
         #comic here so we skip
-        
+
         print("Skipped https://xkcd.com/"+str(i)+"/ the comic is not an image")
         return False
     if i == 1538 or i == 1953:
@@ -83,7 +83,7 @@ for i in range(start_index,2346):
         print("failed to get comic: "+str(i))
         continuum(filepath)
         continue
-        
+
     file = open(dirpath+name[0],"wb")
     for j in img.iter_content(chunk_size=1024*8):
         file.write(j)
