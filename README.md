@@ -10,6 +10,14 @@ Then run the script.
 ```console
 $python xkcd/download.py
 ```
+If you haven't installed 'bs4' and 'lxml' run
+```console
+$pip install -U bs4
+$pip install -U lxml
+```
+The script needs minor modifications to the directory paths for Linux.
+Simply change the dirpath and filepath variables.
+
 ## How this script is better than most of the other scripts
 I can't say for sure that this is the best script for downloading xkcd comics there is,
 but I can say it's one of the fastest. The script uses persistent http connections which I haven't yet seen in another xkcd script.
