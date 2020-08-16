@@ -50,6 +50,10 @@ def check_i(i):
         """ 
         print("Skipped https://xkcd.com/"+str(i)+"/ the comic is not an image")
         return False
+    if i == 1538 or i == 1953:
+        """"these are just incorrectly parsed am working on it though"""
+        print("Skipped https://xkcd.com/"+str(i)+"/ the script can't pass these correctly \n Am working on a fix though \n")
+        return False
     return True
 
 session = requests.Session()
