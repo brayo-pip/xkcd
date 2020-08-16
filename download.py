@@ -1,12 +1,23 @@
 import bs4,requests,re,time,os
 baseurl = "https://xkcd.com/"
-dirpath = "C:/xkcd/"
 reg = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
 
+dirpath = "C:/xkcd/"
 filepath = "C:/xkcd/index.txt"
+
+def initialize(dirpath,filepath):
+    """runs once at script start"""
+    if not os.path.exists(dirpath):
+        os.makedirs(dirpath)
+    if not os.path.exists(filepath):
+        """ Creates the continue file on first run """
+        continue_file = open(filepath, "x")
+        continue_file.close()
+
 continue_file = open(filepath,"r")
 start_index = int(continue_file.read())
 continue_file.close()
+
 
 def continuum(filepath):
     """ nothing classy just keeps a continue txt file for continuity """
@@ -24,7 +35,7 @@ def check_i(i):
         turns out he skipped 404 for 'obvious reasons'
         """
         return False
-    if i == 1350 or i == 1608:
+    if i == 1350 or i == 1608 or i == 2198:
         print("Visit https://xkcd.com/"+str(i)+"/ it's an interactive comic")
         return False
     if i == 1416:
@@ -42,7 +53,7 @@ def check_i(i):
     return True
 
 session = requests.Session()
-for i in range(start_index,2000):
+for i in range(start_index,2346):
     if not check_i(i):
         continue
     if i % 50 == 0:
