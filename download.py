@@ -2,15 +2,16 @@ import bs4,getpass,requests,re,time,os
 baseurl = "https://xkcd.com/"
 regex = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
 
-#dirpath = "/home/nillnada/xkcd/all/"
-#filepath = "/home/nillnada/xkcd/index.txt"
-
-if os.name =="posix":
+if os.name == "posix":
+    #for unix systems like linux
     dirpath = "/home/"+getpass.getuser()+"/xkcd/"
     filepath = dirpath+"index.txt"
-else:
+if os.name == "nt":
+    #for windows
     dirpath = "C:/Users/"+getpass.getuser()+"/xkcd"
     filepath = dirpath+"index.txt"
+
+#still figuring out Mac OS
 
 def initialize(dirpath,filepath):
     """runs once at script start"""
