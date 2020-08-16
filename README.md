@@ -1,4 +1,7 @@
 # xkcd
+
+[![Join the chat at https://gitter.im/xkcd-script/xkcd](https://badges.gitter.im/xkcd-script/xkcd.svg)](https://gitter.im/xkcd-script/xkcd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is a script for downloading all the xkcd comics
 
 ## How to use the script
