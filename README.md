@@ -25,9 +25,6 @@ $cd xkcd
 $pip3 install -r requirements.txt
 ```
 
-The script needs minor modifications to the directory paths for Linux.
-Simply change the dirpath and filepath variables.
-
 ## How this script is better than most of the other scripts
 
 I can't say for sure that this is the best script for downloading xkcd comics there is,
@@ -40,8 +37,8 @@ The script maintains a continuity file so that it can 'recall' the last comic it
 It does updates the continuity file every 10 comics, I didn't want to update too often as this could be a bottleneck.
 The continuity file is also updated during this 'sleep' session.
 
-The script also has an amateur network congestion control, simply sleeps for 0.5 seconds for every 10 comics downloaded.This may be necessary once I introduce multithreading.
+The script also has an amateur network congestion control, simply sleeps for 0.5 seconds for every 10 comics downloaded.This may be necessary once I introduce multi-threading.
 
 ## Upcoming features
 
-I wish to introduce multithreading so as to be able to fully utilize the a user's bandwidth. Requesting multiple comics simultaneously and writing them to disk/SSD simultaneously.
+I wish to introduce multi-threading so as to be able to fully utilize the a user's bandwidth. Requesting multiple comics simultaneously and writing them to disk/SSD simultaneously.
