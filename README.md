@@ -12,17 +12,20 @@ clone the repo
 $git clone https://xkcd.com/brayo-pip/xkcd.git
 ```
 
+Run this code to install all the dependencies
+
+```console
+$cd xkcd
+```
+
+```console
+$pip3 install -r requirements.txt
+```
+
 Then run the script.
 
 ```console
 $python xkcd/download.py
-```
-
-Run this code install all the dependencies
-
-```console
-$cd xkcd
-$pip3 install -r requirements.txt
 ```
 
 ## How this script is better than most of the other scripts
