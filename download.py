@@ -8,7 +8,7 @@ if os.name == "posix":
     filepath = dirpath+"index.txt"
 if os.name == "nt":
     #for windows
-    dirpath = "C:/Users/"+getpass.getuser()+"/xkcd/"
+    dirpath = "C:/Users/"+getpass.getuser()+"/xkcd"
     filepath = dirpath+"index.txt"
 
 #still figuring out Mac OS
@@ -20,10 +20,8 @@ def initialize(dirpath,filepath):
     if not os.path.exists(filepath):
         #Creates the continue file on first run
         continue_file = open(filepath, "x")
-        continue_file.write(str(1))
+        continue_file.write(str(i))
         continue_file.close()
-
-initialize(dirpath,filepath)
 
 continue_file = open(filepath,"r")
 start_index = int(continue_file.read())
