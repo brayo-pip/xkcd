@@ -1,4 +1,4 @@
-import getpass,os,requests,time
+import getpass,os,requests
 
 baseurl = "https://xkcd.com/"
 json_part = "info.0.json"
