@@ -1,6 +1,7 @@
-import bs4,getpass,requests,re,time,os
+import getpass,os,requests,time
+
 baseurl = "https://xkcd.com/"
-regex = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
+json_part = "info.0.json"
 
 if os.name == "posix":
     #for unix systems like linux
@@ -58,43 +59,56 @@ def check_i(i):
 
         print("Skipped https://xkcd.com/"+str(i)+"/ the comic is not an image")
         return False
-    if i == 1538 or i == 1953:
-        #these are just incorrectly parsed am working on it though
-        print("Skipped https://xkcd.com/"+str(i)+"/ the script can't pass these correctly \n Am working on a fix though \n")
+    if i == 472:
+        #Randall Monroe screwed up the json data
         return False
     return True
+def check_name(name):
+    if "?" or "\\" or "/" or "*" or "<" or ">" or "|" or ":" or "\"" in name:
+        return True
+
+def end_index():
+    res = requests.get(baseurl+json_part)
+    res.raise_for_status()
+    json_data = res.json()
+    return int(json_data['num'])
+
 #The session implements persistent http connections
 session = requests.Session()
-for i in range(start_index,2346+1):
+end_index = end_index()
+
+for i in range(start_index,end_index+1):
     if not check_i(i):
         continue
-    if i % 10 == 0:
-        print("Sleeping for a while, this is my version of Congestion Control lol")
+    if i % 50 == 0:
         continuum(filepath)
-        time.sleep(0.5)
-    url = baseurl+str(i)+"/"
+    url = baseurl+str(i)+"/"+json_part
     try:
         res = session.get(url)
     except:
         continuum(filepath)
+        res.raise_for_status()
+    
+    json_data = res.json()
+    img_url = json_data['img']
+    name = json_data['title']+".png"
+    #File names can't have these characters
+    bad_chars ="<>?|\\/:*"
+    
+    if check_name:
+        for h in bad_chars:
+            name = name.replace(h,"")
+    if os.path.exists(os.path.join(dirpath,name)):
+        print("skipping " + name +" comic: "+str(i))
         continue
-        #res.raise_for_status()
-    soup = bs4.BeautifulSoup(res.content, features="lxml")
-    img_url = "https:"+soup.body.find("div",id='comic').img['src']
-    name = re.findall(regex,img_url)
-
-    if os.path.exists(os.path.join(dirpath,name[0])):
-        print("skipping " + name[0]+" comic: "+str(i))
-        continue
-    print("downloading "+name[0])
+    print("downloading "+ name)
     try:
         img = session.get(img_url)
     except:
         print("failed to get comic: "+str(i))
-        continuum(filepath)
-        continue
+        img.raise_for_status()
 
-    file = open(dirpath+name[0],"wb")
+    file = open(dirpath+name,"wb")
     for j in img.iter_content(chunk_size=1024*8):
         file.write(j)
     file.close()
