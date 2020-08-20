@@ -1,4 +1,5 @@
 import bs4,getpass,requests,re,time,os
+
 baseurl = "https://xkcd.com/"
 regex = r"[\w\d\s\(\)]+\.[pjg][npi][gf]"
 
@@ -65,6 +66,7 @@ def check_i(i):
     return True
 #The session implements persistent http connections
 session = requests.Session()
+
 for i in range(start_index,2346+1):
     if not check_i(i):
         continue
@@ -77,8 +79,8 @@ for i in range(start_index,2346+1):
         res = session.get(url)
     except:
         continuum(filepath)
-        continue
-        #res.raise_for_status()
+        res.raise_for_status()
+    
     soup = bs4.BeautifulSoup(res.content, features="lxml")
     img_url = "https:"+soup.body.find("div",id='comic').img['src']
     name = re.findall(regex,img_url)
@@ -92,7 +94,7 @@ for i in range(start_index,2346+1):
     except:
         print("failed to get comic: "+str(i))
         continuum(filepath)
-        continue
+        img.raise_for_status()
 
     file = open(dirpath+name[0],"wb")
     for j in img.iter_content(chunk_size=1024*8):
