@@ -30,7 +30,6 @@ continue_file = open(filepath,"r")
 start_index = int(continue_file.read())
 continue_file.close()
 
-
 def continuum(filepath):
     """nothing classy just keeps a continue txt file for continuity"""
     continue_file = open(filepath,"w+")
@@ -56,7 +55,6 @@ def check_i(i):
         #these ones I have no idea why he chose
         #these specific numbers but anyway there's no
         #comic here so we skip
-
         print("Skipped https://xkcd.com/"+str(i)+"/ the comic is not an image")
         return False
     if i == 472:
