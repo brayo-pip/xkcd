@@ -30,11 +30,11 @@ continue_file = open(filepath,"r")
 start_index = int(continue_file.read())
 continue_file.close()
 
-def continuum(filepath):
+def continuum(filepath, index):
     """nothing classy just keeps a continue txt file for continuity"""
     continue_file = open(filepath,"w+")
     continue_file.truncate(0)
-    continue_file.write(str(i))
+    continue_file.write(str(index))
     continue_file.close()
     print("updated the continue file")
 
@@ -79,12 +79,12 @@ for i in range(start_index,end_index+1):
     if not check_i(i):
         continue
     if i % 50 == 0:
-        continuum(filepath)
+        continuum(filepath,i)
     url = baseurl+str(i)+"/"+json_part
     try:
         res = session.get(url)
     except:
-        continuum(filepath)
+        continuum(filepath,i)
         res.raise_for_status()
     
     json_data = res.json()
@@ -110,3 +110,5 @@ for i in range(start_index,end_index+1):
     for j in img.iter_content(chunk_size=1024*8):
         file.write(j)
     file.close()
+
+continuum(filepath,end_index)
