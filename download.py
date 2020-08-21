@@ -1,4 +1,4 @@
-import getpass,os,requests
+import getpass,os,requests,re
 
 baseurl = "https://xkcd.com/"
 json_part = "info.0.json"
@@ -89,7 +89,12 @@ for i in range(start_index,end_index+1):
     
     json_data = res.json()
     img_url = json_data['img']
-    name = json_data['title']+".png"
+
+    #extract extension
+    reg = r"\.[pjg][npi][ngf]"
+    ext =re.findall(reg,img_url)
+    
+    name = json_data['title']+ext[0]
     #File names can't have these characters
     bad_chars ="<>?|\\/:*"
     
