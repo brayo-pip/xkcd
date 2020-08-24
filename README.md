@@ -1,6 +1,6 @@
 # xkcd
 
-[![Join the chat at https://gitter.im/xkcd-script/xkcd](https://badges.gitter.im/xkcd-script/xkcd.svg)](https://gitter.im/xkcd-script/xkcd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)![GitHub repo size](https://img.shields.io/github/repo-size/brayo-pip/xkcd)
+[![Join the chat at https://gitter.im/xkcd-script/xkcd](https://badges.gitter.im/xkcd-script/xkcd.svg)](https://gitter.im/xkcd-script/xkcd?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)![GitHub repo size](https://img.shields.io/github/repo-size/brayo-pip/xkcd)![License](https://img.shields.io/github/license/brayo-pip/xkcd)
 
 This is a script for downloading all the xkcd comics
 
