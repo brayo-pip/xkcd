@@ -5,11 +5,11 @@ json_part = "info.0.json"
 
 if os.name == "posix":
     # for unix systems like linux
-    dirpath = "/home/" + getpass.getuser() + "/xkcd/"
+    dirpath = "/home/" + getpass.getuser() + "/xkcd-comics/"
     filepath = dirpath + "index.txt"
 if os.name == "nt":
     # for windows
-    dirpath = "C:/Users/" + getpass.getuser() + "/xkcd/"
+    dirpath = "C:/Users/" + getpass.getuser() + "/xkcd-comics/"
     filepath = dirpath + "index.txt"
 
 # still figuring out Mac OS
