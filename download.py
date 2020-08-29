@@ -101,7 +101,7 @@ for i in range(start_index, end_index + 1):
     img_url = json_data["img"]
 
     # extract extension
-    reg = r"\.[pjg][npi][ngf]"
+    reg = r"\.[pjg][npi][gf]"
     ext = re.findall(reg, img_url)
 
     name = json_data["title"] + ext[0]
