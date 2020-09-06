@@ -1,4 +1,0 @@
--name: Black Check
- uses: jpetrucciani/black-check@19.10b0
- 
- 
