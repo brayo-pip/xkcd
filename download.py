@@ -1,4 +1,4 @@
-import getpass, os, requests, re
+import getpass, os,multiprocessing, requests, re
 
 baseurl = "https://xkcd.com/"
 json_part = "info.0.json"
@@ -82,19 +82,18 @@ def end_index():
 
 
 # The session implements persistent http connections
-session = requests.Session()
+session = None
+def set_global_session():
+    global session
+    if not session:
+        session = requests.Session()
 end_index = end_index()
 
-for i in range(start_index, end_index + 1):
-    if not check_i(i):
-        continue
-    if i % 50 == 0:
-        continuum(filepath, i)
-    url = baseurl + str(i) + "/" + json_part
+def download_comic(i):
+    url = baseurl + str(i) +"/" +json_part
     try:
         res = session.get(url)
     except:
-        continuum(filepath, i)
         res.raise_for_status()
 
     json_data = res.json()
@@ -113,7 +112,7 @@ for i in range(start_index, end_index + 1):
             name = name.replace(h, "")
     if os.path.exists(os.path.join(dirpath, name)):
         print("skipping " + name + " comic: " + str(i))
-        continue
+        return
     print("downloading " + name)
     try:
         img = session.get(img_url)
@@ -126,4 +125,13 @@ for i in range(start_index, end_index + 1):
         file.write(j)
     file.close()
 
-continuum(filepath, end_index)
+def download_all_comics(sites):
+    with multiprocessing.Pool(initializer=set_global_session) as pool:
+        pool.map(download_comic, sites)
+
+
+if __name__ == "__main__":
+    sites = [i for i in range(start_index,end_index+1)]
+    download_all_comics(sites)
+    continuum(filepath=filepath, index=end_index)
+
