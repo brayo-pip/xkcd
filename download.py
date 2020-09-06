@@ -1,4 +1,4 @@
-import getpass, os,multiprocessing, requests, re
+import getpass, os, multiprocessing, requests, re
 
 baseurl = "https://xkcd.com/"
 json_part = "info.0.json"
@@ -83,14 +83,19 @@ def end_index():
 
 # The session implements persistent http connections
 session = None
+
+
 def set_global_session():
     global session
     if not session:
         session = requests.Session()
+
+
 end_index = end_index()
 
+
 def download_comic(i):
-    url = baseurl + str(i) +"/" +json_part
+    url = baseurl + str(i) + "/" + json_part
     try:
         res = session.get(url)
     except:
@@ -125,13 +130,13 @@ def download_comic(i):
         file.write(j)
     file.close()
 
+
 def download_all_comics(sites):
     with multiprocessing.Pool(initializer=set_global_session) as pool:
         pool.map(download_comic, sites)
 
 
 if __name__ == "__main__":
-    sites = [i for i in range(start_index,end_index+1)]
+    sites = [i for i in range(start_index, end_index + 1)]
     download_all_comics(sites)
     continuum(filepath=filepath, index=end_index)
-
