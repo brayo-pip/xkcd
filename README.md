@@ -44,4 +44,4 @@ The script also has an amateur network congestion control, simply sleeps for 0.5
 
 ## Upcoming features
 
-I wish to introduce multi-threading so as to be able to fully utilize the a user's bandwidth. Requesting multiple comics simultaneously and writing them to disk/SSD simultaneously.
+Finally introduced concurrency it's available on concurrent branch. I am still debuging it, but it works perfectly 99% of the time,xd.
