@@ -89,11 +89,7 @@ def set_global_session():
     global session
     if not session:
         session = requests.Session()
-
-
 end_index = end_index()
-
-
 def download_comic(i):
     url = baseurl + str(i) + "/" + json_part
     try:
