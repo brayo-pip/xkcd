@@ -35,11 +35,12 @@ continue_file.close()
 
 def continuum(filepath, index):
     """nothing classy just keeps a continue txt file for continuity"""
-    continue_file = open(filepath, "w+")
-    continue_file.truncate(0)
-    continue_file.write(str(index))
-    continue_file.close()
-    print("updated the continue file")
+    continue_file = open(filepath, "r+")
+    if index > int(continue_file.read()):
+        continue_file.truncate(0)
+        continue_file.write(str(index))
+        continue_file.close()
+        print("updated the continue file")
 
 
 def check_i(i):
@@ -81,21 +82,23 @@ def end_index():
     return int(json_data["num"])
 
 
-# The session implements persistent http connections
 session = None
 
 
 def set_global_session():
+    """ The session implements persistent http connections """
     global session
     if not session:
         session = requests.Session()
+
+
 end_index = end_index()
+
+
 def download_comic(i):
     url = baseurl + str(i) + "/" + json_part
-    try:
-        res = session.get(url)
-    except:
-        res.raise_for_status()
+    res = session.get(url)
+    res.raise_for_status()
 
     json_data = res.json()
     img_url = json_data["img"]
@@ -108,9 +111,11 @@ def download_comic(i):
     # File names can't have these characters
     bad_chars = "<>?|\\/:*"
 
-    if check_name:
+    if check_name(name):
         for h in bad_chars:
             name = name.replace(h, "")
+            if not check_name(name):
+                break
     if os.path.exists(os.path.join(dirpath, name)):
         print("skipping " + name + " comic: " + str(i))
         return
