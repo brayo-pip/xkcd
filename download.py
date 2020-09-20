@@ -1,4 +1,4 @@
-import getpass, os, multiprocessing, requests, re
+import concurrent.futures, getpass, os, requests, re#,time
 
 baseurl = "https://xkcd.com/"
 json_part = "info.0.json"
@@ -24,6 +24,8 @@ def initialize(dirpath, filepath):
         continue_file = open(filepath, "x")
         continue_file.write(str(1))
         continue_file.close()
+    global session
+    session = requests.Session()
 
 
 initialize(dirpath, filepath)
@@ -35,7 +37,7 @@ continue_file.close()
 
 def continuum(filepath, index):
     """nothing classy just keeps a continue txt file for continuity"""
-    continue_file = open(filepath,'r+')
+    continue_file = open(filepath, "r+")
     if index > int(continue_file.read()):
         continue_file.truncate(0)
         continue_file.seek(0)
@@ -79,26 +81,18 @@ def check_name(name):
 
 
 def end_index():
-    res = requests.get(baseurl + json_part)
+    res = session.get(baseurl + json_part)
     res.raise_for_status()
     json_data = res.json()
     return int(json_data["num"])
-
-
-session = None
-
-
-def set_global_session():
-    """ The session implements persistent http connections """
-    global session
-    if not session:
-        session = requests.Session()
 
 
 end_index = end_index()
 
 
 def download_comic(i):
+    if not check_i(i):
+        return
     url = baseurl + str(i) + "/" + json_part
     res = session.get(url)
     res.raise_for_status()
@@ -136,11 +130,14 @@ def download_comic(i):
 
 
 def download_all_comics(sites):
-    with multiprocessing.Pool(initializer=set_global_session) as pool:
-        pool.map(download_comic, sites)
+    #start = time.time()
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor.map(download_comic, sites)
+    #end = time.time()
+    #print(f"It took {end-start} seconds")
 
 
 if __name__ == "__main__":
-    sites = [i for i in range(start_index, end_index + 1)]
-    download_all_comics(sites)
+    urls = [i for i in range(start_index, end_index + 1)]
+    download_all_comics(urls)
     continuum(filepath=filepath, index=end_index)
