@@ -35,12 +35,15 @@ continue_file.close()
 
 def continuum(filepath, index):
     """nothing classy just keeps a continue txt file for continuity"""
-    continue_file = open(filepath, "r+")
+    continue_file = open(filepath,'r+')
     if index > int(continue_file.read()):
         continue_file.truncate(0)
+        continue_file.seek(0)
         continue_file.write(str(index))
         continue_file.close()
         print("updated the continue file")
+    else:
+        continue_file.close()
 
 
 def check_i(i):
