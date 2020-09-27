@@ -90,16 +90,17 @@ def end_index():
 end_index = end_index()
 
 
-def download_comic(i):
-    if not check_i(i):
-        return
-    url = baseurl + str(i) + "/" + json_part
+def download_comic(url):
     res = session.get(url)
     res.raise_for_status()
 
     json_data = res.json()
     img_url = json_data["img"]
-
+    i = json_data["num"]
+    
+    if not check_i(i):
+        return 
+    
     # extract extension
     reg = r"\.[pjg][npi][gf]"
     ext = re.findall(reg, img_url)
@@ -138,6 +139,6 @@ def download_all_comics(sites):
 
 
 if __name__ == "__main__":
-    urls = [i for i in range(start_index, end_index + 1)]
+    urls = [baseurl+str(i)+"/"+json_part for i in range(start_index,end_index+1)]
     download_all_comics(urls)
     continuum(filepath=filepath, index=end_index)
