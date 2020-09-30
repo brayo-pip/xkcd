@@ -1,4 +1,4 @@
-import getpass, os, requests, re
+import concurrent.futures, getpass, os, requests, re  # ,time
 
 baseurl = "https://xkcd.com/"
 json_part = "info.0.json"
@@ -24,6 +24,8 @@ def initialize(dirpath, filepath):
         continue_file = open(filepath, "x")
         continue_file.write(str(1))
         continue_file.close()
+    global session
+    session = requests.Session()
 
 
 initialize(dirpath, filepath)
@@ -35,11 +37,15 @@ continue_file.close()
 
 def continuum(filepath, index):
     """nothing classy just keeps a continue txt file for continuity"""
-    continue_file = open(filepath, "w+")
-    continue_file.truncate(0)
-    continue_file.write(str(index))
-    continue_file.close()
-    print("updated the continue file")
+    continue_file = open(filepath, "r+")
+    if index > int(continue_file.read()):
+        continue_file.truncate(0)
+        continue_file.seek(0)
+        continue_file.write(str(index))
+        continue_file.close()
+        print("updated the continue file")
+    else:
+        continue_file.close()
 
 
 def check_i(i):
@@ -75,30 +81,25 @@ def check_name(name):
 
 
 def end_index():
-    res = requests.get(baseurl + json_part)
+    res = session.get(baseurl + json_part)
     res.raise_for_status()
     json_data = res.json()
     return int(json_data["num"])
 
 
-# The session implements persistent http connections
-session = requests.Session()
 end_index = end_index()
 
-for i in range(start_index, end_index + 1):
-    if not check_i(i):
-        continue
-    if i % 50 == 0:
-        continuum(filepath, i)
-    url = baseurl + str(i) + "/" + json_part
-    try:
-        res = session.get(url)
-    except:
-        continuum(filepath, i)
-        res.raise_for_status()
+
+def download_comic(url):
+    res = session.get(url)
+    res.raise_for_status()
 
     json_data = res.json()
     img_url = json_data["img"]
+    i = json_data["num"]
+
+    if not check_i(i):
+        return
 
     # extract extension
     reg = r"\.[pjg][npi][gf]"
@@ -108,12 +109,14 @@ for i in range(start_index, end_index + 1):
     # File names can't have these characters
     bad_chars = "<>?|\\/:*"
 
-    if check_name:
+    if check_name(name):
         for h in bad_chars:
             name = name.replace(h, "")
+            if not check_name(name):
+                break
     if os.path.exists(os.path.join(dirpath, name)):
         print("skipping " + name + " comic: " + str(i))
-        continue
+        return
     print("downloading " + name)
     try:
         img = session.get(img_url)
@@ -126,4 +129,18 @@ for i in range(start_index, end_index + 1):
         file.write(j)
     file.close()
 
-continuum(filepath, end_index)
+
+def download_all_comics(sites):
+    # start = time.time()
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor.map(download_comic, sites)
+    # end = time.time()
+    # print(f"It took {end-start} seconds")
+
+
+if __name__ == "__main__":
+    urls = [
+        baseurl + str(i) + "/" + json_part for i in range(start_index, end_index + 1)
+    ]
+    download_all_comics(urls)
+    continuum(filepath=filepath, index=end_index)
