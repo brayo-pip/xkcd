@@ -1,4 +1,4 @@
-import concurrent.futures, getpass, os, requests, re#,time
+import concurrent.futures, getpass, os, requests, re  # ,time
 
 baseurl = "https://xkcd.com/"
 json_part = "info.0.json"
@@ -97,10 +97,10 @@ def download_comic(url):
     json_data = res.json()
     img_url = json_data["img"]
     i = json_data["num"]
-    
+
     if not check_i(i):
-        return 
-    
+        return
+
     # extract extension
     reg = r"\.[pjg][npi][gf]"
     ext = re.findall(reg, img_url)
@@ -131,14 +131,16 @@ def download_comic(url):
 
 
 def download_all_comics(sites):
-    #start = time.time()
+    # start = time.time()
     with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(download_comic, sites)
-    #end = time.time()
-    #print(f"It took {end-start} seconds")
+    # end = time.time()
+    # print(f"It took {end-start} seconds")
 
 
 if __name__ == "__main__":
-    urls = [baseurl+str(i)+"/"+json_part for i in range(start_index,end_index+1)]
+    urls = [
+        baseurl + str(i) + "/" + json_part for i in range(start_index, end_index + 1)
+    ]
     download_all_comics(urls)
     continuum(filepath=filepath, index=end_index)
